@@ -51,9 +51,6 @@ message(STATUS "Python lib:     ${Python3_LIBRARIES}")
 message(STATUS "Python include: ${Python3_INCLUDE_DIRS}")
 message(STATUS "Python interpreter: ${Python3_EXECUTABLE}")
 
-if(NOT "${LLVM_PACKAGE_VERSION}" VERSION_EQUAL "${LLVM_REQUIRED_VERSION}")
-  message(FATAL_ERROR "Found LLVM ${LLVM_PACKAGE_VERSION}, but need LLVM ${LLVM_REQUIRED_VERSION}")
-endif()
 
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 
