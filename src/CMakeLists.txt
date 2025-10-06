@@ -169,6 +169,8 @@ list(APPEND LLVM_LIBS_DEP
     AArch64AsmParser
     X86CodeGen
     X86AsmParser
+    Support
+    Target
 )
 
 if(APPLE)
