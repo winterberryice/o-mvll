@@ -30,7 +30,7 @@ set(OMVLL_ABI "${OMVLL_DEFAULT_ABI}" CACHE STRING
   "Compiler ABI to build OMVLL against. Supported options are \"Apple\" and \"Android\". Defaults to ${OMVLL_DEFAULT_ABI}.")
 
 if(OMVLL_ABI STREQUAL "Apple")
-  set(LLVM_REQUIRED_VERSION 19.1.4)
+  set(LLVM_REQUIRED_VERSION 15)
 elseif(OMVLL_ABI STREQUAL "Android")
   set(LLVM_REQUIRED_VERSION 17)
 else()
@@ -44,16 +44,13 @@ set(PYTHON_VERSION "3" CACHE STRING "Python version")
 find_package(Python3 COMPONENTS Development Interpreter)
 
 find_package(spdlog REQUIRED CONFIG)
-find_package(pybind11 REQUIRED CONFIG NO_DEFAULT_PATH)
+find_package(pybind11 REQUIRED CONFIG)
 
 message(STATUS "Python version: ${Python3_VERSION}")
 message(STATUS "Python lib:     ${Python3_LIBRARIES}")
 message(STATUS "Python include: ${Python3_INCLUDE_DIRS}")
 message(STATUS "Python interpreter: ${Python3_EXECUTABLE}")
 
-if(NOT "${LLVM_PACKAGE_VERSION}" VERSION_EQUAL "${LLVM_REQUIRED_VERSION}")
-  message(FATAL_ERROR "Found LLVM ${LLVM_PACKAGE_VERSION}, but need LLVM ${LLVM_REQUIRED_VERSION}")
-endif()
 
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 
