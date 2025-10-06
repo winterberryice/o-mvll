@@ -13,6 +13,30 @@
 
 #include "omvll/config.hpp"
 
+#include "llvm/ADT/StringRef.h"
+#include "llvm/TargetParser/Triple.h"
+
+template <>
+struct fmt::formatter<llvm::StringRef> : fmt::formatter<std::string_view> {
+  template <typename FormatContext>
+  auto format(llvm::StringRef s, FormatContext& ctx) const {
+    return formatter<std::string_view>::format({s.data(), s.size()}, ctx);
+  }
+};
+
+template <>
+struct fmt::formatter<llvm::Triple::ArchType> {
+    template <typename ParseContext>
+    constexpr auto parse(ParseContext& ctx) {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(llvm::Triple::ArchType arch, FormatContext& ctx) const {
+        return fmt::format_to(ctx.out(), "{}", llvm::Triple::getArchTypeName(arch));
+    }
+};
+
 #ifdef OMVLL_DEBUG
 #define SDEBUG(...) Logger::debug(__VA_ARGS__)
 #else
@@ -48,30 +72,30 @@ public:
   static void set_level(spdlog::level::level_enum Level);
   static void set_level(LogLevel Level);
 
-  template <typename... Ts>
-  static void trace(const char *Fmt, const Ts &...Args) {
+  template <typename S, typename... Ts>
+  static void trace(const S &Fmt, const Ts &...Args) {
     Logger::instance().Sink->trace(Fmt, Args...);
   }
 
-  template <typename... Ts>
-  static void debug(const char *Fmt, const Ts &...Args) {
+  template <typename S, typename... Ts>
+  static void debug(const S &Fmt, const Ts &...Args) {
 #ifdef OMVLL_DEBUG
     Logger::instance().Sink->debug(Fmt, Args...);
 #endif
   }
 
-  template <typename... Ts>
-  static void info(const char *Fmt, const Ts &...Args) {
+  template <typename S, typename... Ts>
+  static void info(const S &Fmt, const Ts &...Args) {
     Logger::instance().Sink->info(Fmt, Args...);
   }
 
-  template <typename... Ts>
-  static void err(const char *Fmt, const Ts &...Args) {
+  template <typename S, typename... Ts>
+  static void err(const S &Fmt, const Ts &...Args) {
     Logger::instance().Sink->error(Fmt, Args...);
   }
 
-  template <typename... Ts>
-  static void warn(const char *Fmt, const Ts &...Args) {
+  template <typename S, typename... Ts>
+  static void warn(const S &Fmt, const Ts &...Args) {
     Logger::instance().Sink->warn(Fmt, Args...);
   }
 
