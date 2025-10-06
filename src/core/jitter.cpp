@@ -18,7 +18,11 @@
 #include "llvm/Support/Error.h"
 #include "llvm/Support/MemoryBuffer.h"
 #include "llvm/Support/TargetSelect.h"
+#if LLVM_VERSION_MAJOR < 16
+#include "llvm/Support/Host.h"
+#else
 #include "llvm/TargetParser/Host.h"
+#endif
 #include "llvm/Transforms/Utils/Cloning.h"
 
 #include "omvll/jitter.hpp"

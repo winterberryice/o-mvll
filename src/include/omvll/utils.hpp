@@ -8,7 +8,11 @@
 #include <string>
 
 #include "llvm/ADT/StringRef.h"
+#if LLVM_VERSION_MAJOR < 16
+#include "llvm/Support/Triple.h"
+#else
 #include "llvm/TargetParser/Triple.h"
+#endif
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/PassManager.h"
 #include "llvm/Support/Error.h"

@@ -40,6 +40,8 @@ endif()
 
 find_package(LLVM ${LLVM_REQUIRED_VERSION} REQUIRED CONFIG NO_DEFAULT_PATH)
 
+string(REGEX MATCH "^([0-9]+)" LLVM_VERSION_MAJOR "${LLVM_PACKAGE_VERSION}")
+
 set(PYTHON_VERSION "3" CACHE STRING "Python version")
 find_package(Python3 COMPONENTS Development Interpreter)
 
@@ -88,6 +90,8 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/include/omvll/config.hpp.in"
                "${CMAKE_CURRENT_BINARY_DIR}/include/omvll/config.hpp")
 
 add_library(OMVLL SHARED)
+
+target_compile_definitions(OMVLL PUBLIC LLVM_VERSION_MAJOR=${LLVM_VERSION_MAJOR})
 
 set_target_properties(OMVLL
   PROPERTIES
@@ -169,8 +173,6 @@ list(APPEND LLVM_LIBS_DEP
     AArch64AsmParser
     X86CodeGen
     X86AsmParser
-    Support
-    Target
 )
 
 if(APPLE)

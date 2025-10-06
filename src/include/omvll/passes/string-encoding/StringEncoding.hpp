@@ -9,7 +9,11 @@
 
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/SmallSet.h"
+#if LLVM_VERSION_MAJOR < 16
+#include "llvm/Support/Triple.h"
+#else
 #include "llvm/TargetParser/Triple.h"
+#endif
 #include "llvm/IR/PassManager.h"
 #include "llvm/Support/RandomNumberGenerator.h"
 
