@@ -44,7 +44,7 @@ set(PYTHON_VERSION "3" CACHE STRING "Python version")
 find_package(Python3 COMPONENTS Development Interpreter)
 
 find_package(spdlog REQUIRED CONFIG)
-find_package(pybind11 REQUIRED CONFIG NO_DEFAULT_PATH)
+find_package(pybind11 REQUIRED CONFIG)
 
 message(STATUS "Python version: ${Python3_VERSION}")
 message(STATUS "Python lib:     ${Python3_LIBRARIES}")
