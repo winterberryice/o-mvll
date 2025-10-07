@@ -17,6 +17,14 @@ project(OMVLL
         VERSION ${OMVLL_VERSION_MAJOR}.${OMVLL_VERSION_MINOR}.${OMVLL_VERSION_PATCH})
 message(STATUS "${PROJECT_NAME}: ${PROJECT_VERSION}")
 
+if(APPLE)
+  if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "arm64" OR CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+    set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
+  else()
+    set(CMAKE_OSX_ARCHITECTURES "x86_64")
+  endif()
+endif()
+
 option(OMVLL_FORCE_LOG_DEBUG "Force the log debug output" OFF)
 option(OMVLL_PY_STANDALONE   "Build OMVLL as a standalone Python module" OFF)
 
