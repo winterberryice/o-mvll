@@ -27,13 +27,7 @@ jobs:
 
       # Step 3: Install all necessary x86_64 build dependencies using the x86_64 Homebrew
       - name: Install x86_64 Dependencies via Homebrew
-        run: /usr/local/bin/brew install cmake ninja spdlog pybind11 llvm@15
-
-      - name: Set up Python 3.10.7 for x86_64
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10.7'
-          architecture: 'x64'
+        run: /usr/local/bin/brew install cmake ninja spdlog pybind11 llvm@15 python@3.10
 
       # Step 4: Create a build directory and configure the project with CMake for x86_64
       - name: Configure CMake for x86_64
