@@ -36,8 +36,8 @@ jobs:
           mkdir -p src/build
           cd src/build
           cmake .. -G Ninja \
-            -DCMAKE_PREFIX_PATH="/usr/local" \
-            -DOMVLL_TARGET_ARCHS=x86_64
+            -DOMVLL_TARGET_ARCHS=x86_64 \
+            -DLLVM_DIR=$(brew --prefix llvm@15)/lib/cmake/llvm
           cmake --build .
 
       # Step 5: Upload the final .dylib file as a downloadable artifact
