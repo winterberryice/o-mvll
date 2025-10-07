@@ -15,6 +15,7 @@
 #include "omvll/PyConfig.hpp"
 #include "omvll/jitter.hpp"
 #include "omvll/log.hpp"
+#include "omvll/fmt.hpp"
 #include "omvll/passes.hpp"
 #include "omvll/utils.hpp"
 
