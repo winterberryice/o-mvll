@@ -12,6 +12,7 @@
 
 #include "omvll/log.hpp"
 #include "omvll/utils.hpp"
+#include "omvll/fmt.hpp"
 
 #include "PyObfuscationConfig.hpp"
 
