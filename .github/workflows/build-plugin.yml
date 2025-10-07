@@ -35,9 +35,19 @@ jobs:
           eval "$(/usr/local/bin/brew shellenv)"
           mkdir -p src/build
           cd src/build
+
+          LLVM_ROOT=$(brew --prefix llvm@15)
+          PYTHON_ROOT=$(brew --prefix python@3.10)
+          PYBIND11_ROOT=$(brew --prefix pybind11)
+          SPDLOG_ROOT=$(brew --prefix spdlog)
+
           cmake .. -G Ninja \
             -DOMVLL_TARGET_ARCHS=x86_64 \
-            -DLLVM_DIR=$(brew --prefix llvm@15)/lib/cmake/llvm
+            -DLLVM_DIR=${LLVM_ROOT}/lib/cmake/llvm \
+            -DPython3_ROOT_DIR=${PYTHON_ROOT} \
+            -Dpybind11_DIR=${PYBIND11_ROOT}/share/cmake/pybind11 \
+            -Dspdlog_DIR=${SPDLOG_ROOT}/lib/cmake/spdlog
+
           cmake --build .
 
       # Step 5: Upload the final .dylib file as a downloadable artifact
