@@ -36,6 +36,7 @@ jobs:
         with:
           vcpkgDirectory: '${{ runner.temp }}/vcpkg'
           vcpkgGitCommitId: 'b1b19307e2d2ec1eefbdb7ea069de7d4bcd31f01'
+          runVcpkgInstall: true
 
       # Step 5: Create a build directory and configure the project with CMake
       - name: Configure CMake
