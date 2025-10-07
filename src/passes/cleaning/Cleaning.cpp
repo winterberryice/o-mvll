@@ -7,6 +7,7 @@
 #include "llvm/IR/Module.h"
 
 #include "omvll/log.hpp"
+#include "omvll/fmt.hpp"
 #include "omvll/utils.hpp"
 #include "omvll/passes/cleaning/Cleaning.hpp"
 #include "omvll/omvll_config.hpp"
@@ -33,7 +34,7 @@ PreservedAnalyses Cleaning::run(Module &M, ModuleAnalysisManager &FAM) {
 
     std::string Name  = demangle(F.getName().str());
     StringRef NRef = Name;
-    if (NRef.starts_with("_JNIEnv::") && Config.InlineJniWrappers) {
+    if (NRef.startswith("_JNIEnv::") && Config.InlineJniWrappers) {
       SDEBUG("[{}] Inlining {}", Name);
       F.addFnAttr(Attribute::AlwaysInline);
       Changed = true;

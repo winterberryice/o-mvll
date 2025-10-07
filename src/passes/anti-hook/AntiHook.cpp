@@ -11,6 +11,7 @@
 #include "omvll/PyConfig.hpp"
 #include "omvll/jitter.hpp"
 #include "omvll/log.hpp"
+#include "omvll/fmt.hpp"
 #include "omvll/passes/anti-hook/AntiHook.hpp"
 #include "omvll/utils.hpp"
 

@@ -11,6 +11,7 @@
 #include "omvll/ObfuscationConfig.hpp"
 #include "omvll/PyConfig.hpp"
 #include "omvll/log.hpp"
+#include "omvll/fmt.hpp"
 #include "omvll/passes/indirect-call/IndirectCall.hpp"
 #include "omvll/passes/indirect-call/IndirectCallOpt.hpp"
 #include "omvll/utils.hpp"
@@ -79,7 +80,9 @@ bool IndirectCall::process(Function &F, const DataLayout &DL,
 
   // Rewrite each call-site by loading the shares and computing the final
   // target address as the difference between Share2 and Share1.
-  for (auto [Idx, CI] : enumerate(DirectCalls)) {
+  for (const auto &E : enumerate(DirectCalls)) {
+    size_t Idx = E.index();
+    CallInst *CI = E.value();
     Builder.SetInsertPoint(CI);
     Constant *Index = ConstantInt::get(Type::getInt64Ty(Ctx), Idx);
 
@@ -120,7 +123,7 @@ PreservedAnalyses IndirectCall::run(Module &M, ModuleAnalysisManager &MAM) {
       continue;
 
     if (isFunctionGloballyExcluded(&F) || F.isDeclaration() ||
-        F.isIntrinsic() || F.getName().starts_with("__omvll"))
+        F.isIntrinsic() || F.getName().startswith("__omvll"))
       continue;
 
     Changed |= process(F, DL, Ctx);

@@ -13,6 +13,7 @@
 #include "omvll/ObfuscationConfig.hpp"
 #include "omvll/PyConfig.hpp"
 #include "omvll/log.hpp"
+#include "omvll/fmt.hpp"
 #include "omvll/passes/function-outline/FunctionOutline.hpp"
 #include "omvll/passes/function-outline/FunctionOutlineOpt.hpp"
 #include "omvll/utils.hpp"
@@ -137,7 +138,7 @@ PreservedAnalyses FunctionOutline::run(Module &M, ModuleAnalysisManager &MAM) {
 
     auto *P = std::get_if<FunctionOutlineWithProbability>(&Opt);
     if (P && !isFunctionGloballyExcluded(&F) && !F.isDeclaration() &&
-        !F.isIntrinsic() && !F.getName().starts_with("__omvll"))
+        !F.isIntrinsic() && !F.getName().startswith("__omvll"))
       ToVisit.emplace_back(&F, P->Probability);
   }
 

@@ -16,6 +16,7 @@
 #include "omvll/ObfuscationConfig.hpp"
 #include "omvll/PyConfig.hpp"
 #include "omvll/log.hpp"
+#include "omvll/fmt.hpp"
 #include "omvll/passes/Metadata.hpp"
 #include "omvll/passes/opaque-constants/OpaqueConstants.hpp"
 #include "omvll/utils.hpp"
@@ -202,7 +203,7 @@ PreservedAnalyses OpaqueConstants::run(Module &M, ModuleAnalysisManager &FAM) {
 
   for (Function &F : M) {
     if (isFunctionGloballyExcluded(&F) || F.isDeclaration() ||
-        F.isIntrinsic() || F.getName().starts_with("__omvll"))
+        F.isIntrinsic() || F.getName().startswith("__omvll"))
       continue;
 
     OpaqueConstantsOpt Opt = Config.getUserConfig()->obfuscateConstants(&M, &F);

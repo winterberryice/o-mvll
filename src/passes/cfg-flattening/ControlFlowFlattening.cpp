@@ -18,6 +18,7 @@
 #include "omvll/ObfuscationConfig.hpp"
 #include "omvll/PyConfig.hpp"
 #include "omvll/log.hpp"
+#include "omvll/fmt.hpp"
 #include "omvll/passes/cfg-flattening/ControlFlowFlattening.hpp"
 #include "omvll/utils.hpp"
 
@@ -485,7 +486,7 @@ PreservedAnalyses ControlFlowFlattening::run(Module &M,
     if (isFunctionGloballyExcluded(&F) ||
         !Config.getUserConfig()->controlFlowGraphFlattening(&M, &F) ||
         F.isDeclaration() || F.isIntrinsic() ||
-        F.getName().starts_with("__omvll"))
+        F.getName().startswith("__omvll"))
       continue;
 
     bool MadeChange = runOnFunction(F, *RNG);

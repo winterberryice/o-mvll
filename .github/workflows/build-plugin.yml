@@ -22,7 +22,12 @@ jobs:
 
       # Step 2: Install all necessary build dependencies using Homebrew
       - name: Install Dependencies via Homebrew
-        run: brew install cmake ninja python spdlog pybind11 llvm@15
+        run: brew install cmake ninja spdlog pybind11 llvm@15
+
+      - name: Set up Python 3.10.7
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10.7'
 
       # Step 3: Create a build directory and configure the project with CMake
       - name: Configure CMake

@@ -9,6 +9,7 @@
 #include "omvll/ObfuscationConfig.hpp"
 #include "omvll/PyConfig.hpp"
 #include "omvll/log.hpp"
+#include "omvll/fmt.hpp"
 #include "omvll/passes/objc-cleaner/ObjCleaner.hpp"
 #include "omvll/utils.hpp"
 
@@ -21,7 +22,7 @@ inline bool isObjCVar(const GlobalVariable &G) {
     return false;
 
   StringRef Name = G.getName();
-  return Name.starts_with("OBJC_") || Name.starts_with("_OBJC_");
+  return Name.startswith("OBJC_") || Name.startswith("_OBJC_");
 }
 
 PreservedAnalyses ObjCleaner::run(Module &M, ModuleAnalysisManager &FAM) {

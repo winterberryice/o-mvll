@@ -3,8 +3,6 @@
 // details.
 //
 
-#include <optional>
-
 #include "llvm/ADT/Hashing.h"
 #include "llvm/IR/BasicBlock.h"
 #include "llvm/IR/Function.h"
@@ -29,14 +27,15 @@
 #include "omvll/log.hpp"
 #include "omvll/omvll_config.hpp"
 #include "omvll/utils.hpp"
+#include "omvll/llvm-compat.hpp"
 
 using namespace llvm;
 
 namespace detail {
 
 static int runExecutable(SmallVectorImpl<StringRef> &Args,
-                         std::optional<ArrayRef<StringRef>> Envs = std::nullopt,
-                         ArrayRef<std::optional<StringRef>> Redirects = {}) {
+                         Optional<ArrayRef<StringRef>> Envs = None,
+                         ArrayRef<Optional<StringRef>> Redirects = {}) {
   std::string Buffer;
   raw_string_ostream CmdStr(Buffer);
   for (StringRef Arg : Args)
@@ -51,7 +50,7 @@ static Expected<std::string> getAppleClangPath() {
       sys::fs::getMainExecutable("clang", (void *)&Unused);
 
   // clang, clang++, clang-17, etc. are fine
-  if (sys::path::filename(HostExePath).starts_with("clang"))
+  if (sys::path::filename(HostExePath).startswith("clang"))
     return HostExePath;
 
   SmallString<128> ClangPath = sys::path::parent_path(HostExePath);
@@ -88,10 +87,10 @@ static Expected<std::string> getIPhoneOSSDKPath() {
   const auto &DeveloperDirEnvVar = "DEVELOPER_DIR=" + DeveloperDir;
   SmallVector<StringRef, 1> Envs = {DeveloperDirEnvVar};
 
-  std::optional<StringRef> Redirects[] = {std::nullopt, StringRef(TempPath),
-                                          std::nullopt};
+  Optional<StringRef> Redirects[] = {None, StringRef(TempPath),
+                                     None};
 
-  if (int EC = runExecutable(Args, Envs, Redirects))
+  if (int EC = runExecutable(Args, ArrayRef<StringRef>(Envs), Redirects))
     return createStringError(inconvertibleErrorCode(),
                              "Unable to execute program: " +
                                  std::to_string(EC));
@@ -250,8 +249,10 @@ std::string TypeIDStr(const Type &Ty) {
     case Type::TypeID::ArrayTyID:          return "ArrayTyID";
     case Type::TypeID::FixedVectorTyID:    return "FixedVectorTyID";
     case Type::TypeID::ScalableVectorTyID: return "ScalableVectorTyID";
+#if LLVM_VERSION_MAJOR > 15
     case Type::TypeID::TypedPointerTyID:
       return "TypedPointerTyID";
+#endif
     default:
       llvm_unreachable("Unhandled TypeID!");
   }
