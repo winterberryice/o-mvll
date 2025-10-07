@@ -8,8 +8,9 @@
 #include <string>
 
 #include "llvm/ADT/StringRef.h"
-#if LLVM_VERSION_MAJOR < 16
-#include "llvm/Support/Triple.h"
+#include "llvm/Config/llvm-config.h"
+#if LLVM_VERSION_MAJOR <= 15
+#include "llvm/ADT/Triple.h"
 #else
 #include "llvm/TargetParser/Triple.h"
 #endif

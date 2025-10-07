@@ -24,7 +24,8 @@
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/NoFolder.h"
 #include "llvm/Support/xxhash.h"
-#if LLVM_VERSION_MAJOR < 16
+#include "llvm/Config/llvm-config.h"
+#if LLVM_VERSION_MAJOR <= 15
 #include "llvm/Support/Host.h"
 #else
 #include "llvm/TargetParser/Host.h"
