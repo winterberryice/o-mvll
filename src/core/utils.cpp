@@ -42,7 +42,9 @@ static int runExecutable(SmallVectorImpl<StringRef> &Args,
   for (StringRef Arg : Args)
     CmdStr << Arg << " ";
   SINFO("Invoke subprocess: {}", CmdStr.str());
-  return sys::ExecuteAndWait(Args[0], Args, Envs, Redirects);
+  return sys::ExecuteAndWait(Args[0], Args,
+                             Envs ? llvm::Optional<llvm::ArrayRef<llvm::StringRef>>(*Envs) : llvm::None,
+                             Redirects ? llvm::Optional<llvm::ArrayRef<llvm::StringRef>>(*Redirects) : llvm::None);
 }
 
 static Expected<std::string> getAppleClangPath() {
@@ -250,8 +252,8 @@ std::string TypeIDStr(const Type &Ty) {
     case Type::TypeID::ArrayTyID:          return "ArrayTyID";
     case Type::TypeID::FixedVectorTyID:    return "FixedVectorTyID";
     case Type::TypeID::ScalableVectorTyID: return "ScalableVectorTyID";
-    case Type::TypeID::TypedPointerTyID:
-      return "TypedPointerTyID";
+    case Type::TypeID::PointerTyID:
+      return "Pointer";
     default:
       llvm_unreachable("Unhandled TypeID!");
   }

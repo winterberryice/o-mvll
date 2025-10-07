@@ -24,7 +24,12 @@
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/NoFolder.h"
 #include "llvm/Support/xxhash.h"
+#include "llvm/Config/llvm-config.h"
+#if LLVM_VERSION_MAJOR <= 15
+#include "llvm/Support/Host.h"
+#else
 #include "llvm/TargetParser/Host.h"
+#endif
 #include "llvm/Transforms/Utils/Cloning.h"
 #include "llvm/Transforms/Utils/Local.h"
 #include "llvm/Transforms/Utils/ModuleUtils.h"
