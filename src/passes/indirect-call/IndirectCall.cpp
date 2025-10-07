@@ -80,7 +80,9 @@ bool IndirectCall::process(Function &F, const DataLayout &DL,
 
   // Rewrite each call-site by loading the shares and computing the final
   // target address as the difference between Share2 and Share1.
-  for (auto [Idx, CI] : enumerate(DirectCalls)) {
+  for (const auto &E : enumerate(DirectCalls)) {
+    size_t Idx = E.index();
+    CallInst *CI = E.value();
     Builder.SetInsertPoint(CI);
     Constant *Index = ConstantInt::get(Type::getInt64Ty(Ctx), Idx);
 

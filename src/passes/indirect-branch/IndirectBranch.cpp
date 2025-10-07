@@ -73,8 +73,11 @@ bool IndirectBranch::process(Function &F, const DataLayout &DL,
     BlockToIdx.clear();
   });
 
-  for (auto [Idx, C] : enumerate(ShuffledBlockAddrs))
+  for (const auto &E : enumerate(ShuffledBlockAddrs)) {
+    size_t Idx = E.index();
+    Constant *C = E.value();
     BlockToIdx[cast<BlockAddress>(C)->getBasicBlock()] = Idx;
+  }
 
   unsigned Replaced = 0;
   IRBuilder<> Builder(Ctx);
