@@ -29,18 +29,18 @@ jobs:
       - name: Install x86_64 Dependencies via Homebrew
         run: /usr/local/bin/brew install cmake ninja spdlog pybind11 llvm@15 python@3.10
 
-      # Step 4: Create a build directory and configure the project with CMake for x86_64
-      - name: Configure CMake for x86_64
+      # Step 4: Configure and Build the plugin for x86_64
+      - name: Configure and Build for x86_64
         run: |
+          eval "$(/usr/local/bin/brew shellenv)"
           mkdir -p src/build
           cd src/build
-          /usr/local/bin/cmake .. -G Ninja -DOMVLL_TARGET_ARCHS=x86_64 -DLLVM_DIR=$(/usr/local/bin/brew --prefix llvm@15)/lib/cmake/llvm
+          cmake .. -G Ninja \
+            -DCMAKE_PREFIX_PATH="/usr/local" \
+            -DOMVLL_TARGET_ARCHS=x86_64
+          cmake --build .
 
-      # Step 5: Compile the plugin for x86_64
-      - name: Build the Plugin for x86_64
-        run: /usr/local/bin/cmake --build src/build
-
-      # Step 6: Upload the final .dylib file as a downloadable artifact
+      # Step 5: Upload the final .dylib file as a downloadable artifact
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
