@@ -13,6 +13,7 @@
 #include "omvll/ObfuscationConfig.hpp"
 #include "omvll/PyConfig.hpp"
 #include "omvll/log.hpp"
+#include "omvll/fmt.hpp"
 #include "omvll/passes/Metadata.hpp"
 #include "omvll/passes/opaque-constants/OpaqueConstants.hpp"
 #include "omvll/passes/opaque-field-access/OpaqueFieldAccess.hpp"

@@ -12,6 +12,7 @@
 #include "omvll/ObfuscationConfig.hpp"
 #include "omvll/PyConfig.hpp"
 #include "omvll/log.hpp"
+#include "omvll/fmt.hpp"
 #include "omvll/passes/Metadata.hpp"
 #include "omvll/passes/arithmetic/Arithmetic.hpp"
 #include "omvll/utils.hpp"
@@ -204,12 +205,9 @@ bool Arithmetic::runOnBasicBlock(BasicBlock &BB) {
           SINFO("[{}][{}] Replacing {} with {}", name(), F->getName(),
                 I.getName(), Result->getName());
 
-          BasicBlock *InstParent = I.getParent();
-          BasicBlock::iterator InsertPos = I.getIterator();
-
           Result->copyMetadata(I, {LLVMContext::MD_dbg, LLVMContext::MD_annotation});
           Result->takeName(&I);
-          Result->insertInto(InstParent, InsertPos);
+          Result->insertBefore(&I);
           I.replaceAllUsesWith(Result);
         }
       }
