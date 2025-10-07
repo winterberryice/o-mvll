@@ -17,6 +17,7 @@
 #include "omvll/ObfuscationConfig.hpp"
 #include "omvll/PyConfig.hpp"
 #include "omvll/log.hpp"
+#include "omvll/fmt.hpp"
 #include "omvll/passes/basic-block-duplicate/BasicBlockDuplicate.hpp"
 #include "omvll/passes/basic-block-duplicate/BasicBlockDuplicateOpt.hpp"
 #include "omvll/utils.hpp"
@@ -183,7 +184,7 @@ PreservedAnalyses BasicBlockDuplicate::run(Module &M,
 
     auto *P = std::get_if<BasicBlockDuplicateWithProbability>(&Opt);
     if (P && !isFunctionGloballyExcluded(&F) && !F.isDeclaration() &&
-        !F.isIntrinsic() && !F.getName().starts_with("__omvll"))
+        !F.isIntrinsic() && !F.getName().startswith("__omvll"))
       Changed |= process(F, Ctx, P->Probability);
   }
 

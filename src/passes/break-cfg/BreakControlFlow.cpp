@@ -19,6 +19,7 @@
 #include "omvll/PyConfig.hpp"
 #include "omvll/jitter.hpp"
 #include "omvll/log.hpp"
+#include "omvll/fmt.hpp"
 #include "omvll/passes/Metadata.hpp"
 #include "omvll/passes/break-cfg/BreakControlFlow.hpp"
 #include "omvll/utils.hpp"
@@ -237,7 +238,7 @@ PreservedAnalyses BreakControlFlow::run(Module &M, ModuleAnalysisManager &FAM) {
   std::vector<Function *> ToVisit;
   for (Function &F : M) {
     if (isFunctionGloballyExcluded(&F) || F.isDeclaration() ||
-        F.isIntrinsic() || F.getName().starts_with("__omvll"))
+        F.isIntrinsic() || F.getName().startswith("__omvll"))
       continue;
 
     if (Config.getUserConfig()->breakControlFlow(&M, &F))

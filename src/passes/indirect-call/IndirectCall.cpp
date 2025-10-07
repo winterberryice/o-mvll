@@ -11,6 +11,7 @@
 #include "omvll/ObfuscationConfig.hpp"
 #include "omvll/PyConfig.hpp"
 #include "omvll/log.hpp"
+#include "omvll/fmt.hpp"
 #include "omvll/passes/indirect-call/IndirectCall.hpp"
 #include "omvll/passes/indirect-call/IndirectCallOpt.hpp"
 #include "omvll/utils.hpp"
@@ -120,7 +121,7 @@ PreservedAnalyses IndirectCall::run(Module &M, ModuleAnalysisManager &MAM) {
       continue;
 
     if (isFunctionGloballyExcluded(&F) || F.isDeclaration() ||
-        F.isIntrinsic() || F.getName().starts_with("__omvll"))
+        F.isIntrinsic() || F.getName().startswith("__omvll"))
       continue;
 
     Changed |= process(F, DL, Ctx);

@@ -38,6 +38,7 @@
 #include "omvll/PyConfig.hpp"
 #include "omvll/jitter.hpp"
 #include "omvll/log.hpp"
+#include "omvll/fmt.hpp"
 #include "omvll/passes/Metadata.hpp"
 #include "omvll/passes/arithmetic/Arithmetic.hpp"
 #include "omvll/passes/string-encoding/StringEncoding.hpp"
