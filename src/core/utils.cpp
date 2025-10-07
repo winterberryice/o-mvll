@@ -90,7 +90,7 @@ static Expected<std::string> getIPhoneOSSDKPath() {
   Optional<StringRef> Redirects[] = {None, StringRef(TempPath),
                                      None};
 
-  if (int EC = runExecutable(Args, ArrayRef(Envs), Redirects))
+  if (int EC = runExecutable(Args, ArrayRef<StringRef>(Envs), Redirects))
     return createStringError(inconvertibleErrorCode(),
                              "Unable to execute program: " +
                                  std::to_string(EC));
