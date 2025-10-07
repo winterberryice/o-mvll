@@ -37,11 +37,6 @@ jobs:
           vcpkgDirectory: '${{ runner.temp }}/vcpkg'
           vcpkgGitCommitId: 'b1b19307e2d2ec1eefbdb7ea069de7d4bcd31f01'
 
-      - name: Install dependencies with vcpkg
-        run: |
-          vcpkg install spdlog@1.10.0
-          vcpkg install pybind11@2.10.0
-
       # Step 5: Create a build directory and configure the project with CMake
       - name: Configure CMake
         run: |

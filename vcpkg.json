@@ -1,0 +1,19 @@
+{
+  "name": "o-mvll",
+  "version-string": "1.0.0",
+  "dependencies": [
+    "spdlog",
+    "pybind11"
+  ],
+  "builtin-baseline": "b1b19307e2d2ec1eefbdb7ea069de7d4bcd31f01",
+  "overrides": [
+    {
+      "name": "spdlog",
+      "version": "1.10.0"
+    },
+    {
+      "name": "pybind11",
+      "version": "2.10.0"
+    }
+  ]
+}
