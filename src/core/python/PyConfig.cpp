@@ -4,7 +4,6 @@
 //
 
 #include <dlfcn.h>
-#include <Python.h>
 
 #include <pybind11/embed.h>
 #include <pybind11/pybind11.h>
@@ -30,7 +29,6 @@ using namespace pybind11::literals;
 namespace omvll {
 
 void initPythonpath() {
-#if PY_VERSION_HEX < 0x030B0000
   if (!PyConfig::YConfig.PythonPath.empty()) {
     Py_SetPath(Py_DecodeLocale(PyConfig::YConfig.PythonPath.c_str(), nullptr));
     setenv("PYTHONHOME", PyConfig::YConfig.PythonPath.c_str(), true);
@@ -56,31 +54,6 @@ void initPythonpath() {
     setenv("PYTHONHOME", PythonPath.c_str(), true);
     return;
   }
-#endif
-#else
-  if (!PyConfig::YConfig.PythonPath.empty()) {
-    setenv("PYTHONHOME", PyConfig::YConfig.PythonPath.c_str(), true);
-    return;
-  }
-
-  if (char *Config = getenv(PyConfig::PyEnv_Key)) {
-    setenv("PYTHONHOME", Config, true);
-    return;
-  }
-
-#if defined(__linux__)
-  if (auto *Hdl = dlopen("libpython3.10.so", RTLD_LAZY)) {
-    char Path[400];
-    int Ret = dlinfo(Hdl, RTLD_DI_ORIGIN, Path);
-    if (Ret != 0)
-      return;
-
-    std::string PythonPath = Path;
-    PythonPath.append("/python3.10");
-    setenv("PYTHONHOME", PythonPath.c_str(), true);
-    return;
-  }
-#endif
 #endif
 }
 
