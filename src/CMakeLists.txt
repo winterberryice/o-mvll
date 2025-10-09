@@ -19,6 +19,12 @@ message(STATUS "${PROJECT_NAME}: ${PROJECT_VERSION}")
 
 option(OMVLL_FORCE_LOG_DEBUG "Force the log debug output" OFF)
 option(OMVLL_PY_STANDALONE   "Build OMVLL as a standalone Python module" OFF)
+option(OMVLL_TARGET_ARCHS "Set the target architecture(s) for the build. e.g., 'x86_64' or 'arm64;x86_64'" "")
+
+if(APPLE AND OMVLL_TARGET_ARCHS)
+  set(CMAKE_OSX_ARCHITECTURES "${OMVLL_TARGET_ARCHS}")
+  message(STATUS "Building for target architecture(s): ${CMAKE_OSX_ARCHITECTURES}")
+endif()
 
 if(APPLE)
   set(OMVLL_DEFAULT_ABI "Apple")

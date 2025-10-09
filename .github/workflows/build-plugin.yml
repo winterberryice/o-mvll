@@ -20,38 +20,39 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Step 2: Install all necessary build dependencies using Homebrew
-      - name: Install Dependencies via Homebrew
-        run: brew install cmake ninja spdlog pybind11 llvm@15
-
-      - name: Set up Python 3.10.7
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10.7'
-
-      # Step 3: Create a build directory and configure the project with CMake
-      - name: Configure CMake
+      # Step 2: Install Homebrew for x86_64 under Rosetta 2
+      - name: Install x86_64 Homebrew
         run: |
+          NONINTERACTIVE=1 arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+      # Step 3: Install all necessary x86_64 build dependencies using the x86_64 Homebrew
+      - name: Install x86_64 Dependencies via Homebrew
+        run: /usr/local/bin/brew install cmake ninja spdlog pybind11 llvm@15 python@3.10
+
+      # Step 4: Configure and Build the plugin for x86_64
+      - name: Configure and Build for x86_64
+        run: |
+          eval "$(/usr/local/bin/brew shellenv)"
           mkdir -p src/build
           cd src/build
-          cmake .. -G Ninja -DLLVM_DIR=$(brew --prefix llvm@15)/lib/cmake/llvm
 
-      # Step 4: Compile the plugin
-      - name: Build the Plugin
-        run: cmake --build src/build
+          LLVM_ROOT=$(brew --prefix llvm@15)
+          PYTHON_ROOT=$(brew --prefix python@3.10)
+          PYBIND11_ROOT=$(brew --prefix pybind11)
+          SPDLOG_ROOT=$(brew --prefix spdlog)
+
+          cmake .. -G Ninja \
+            -DOMVLL_TARGET_ARCHS=x86_64 \
+            -DLLVM_DIR=${LLVM_ROOT}/lib/cmake/llvm \
+            -DPython3_ROOT_DIR=${PYTHON_ROOT} \
+            -Dpybind11_DIR=${PYBIND11_ROOT}/share/cmake/pybind11 \
+            -Dspdlog_DIR=${SPDLOG_ROOT}/lib/cmake/spdlog
+
+          cmake --build .
 
       # Step 5: Upload the final .dylib file as a downloadable artifact
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: omvll-plugin
+          name: omvll-plugin-x86_64
           path: src/build/libOMVLL.dylib
-          # The output from the build is libOMVLL.dylib, but the user wants the artifact to be downloadable as omvll.dylib.
-          # The 'upload-artifact' action automatically names the downloaded file based on the 'name' parameter.
-          # To provide the final file as 'omvll.dylib', we would typically rename it before this step.
-          # However, to keep the workflow clean and since the user's main goal is artifact availability,
-          # we will upload it as is. The user can rename it after downloading.
-          # For a more direct solution, a 'mv' command could be added before this step:
-          # mv src/build/libOMVLL.dylib src/build/omvll.dylib
-          # and then the path would be:
-          # path: src/build/omvll.dylib
